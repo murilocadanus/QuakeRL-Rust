@@ -31,7 +31,7 @@ impl Game
         let player_context = &context.trans(self.player.x, self.player.y)
             .rot_rad(self.rotation)
             .trans(-25.0, -25.0);
-        
+
         graphics::image(&self.player.image, player_context, &mut self.gl);
         //Rectangle::new([1.0, 0.0, 0.0, 1.0]).draw([0.0, 0.0, 50.0, 50.0], player_context, &mut self.gl);
     }

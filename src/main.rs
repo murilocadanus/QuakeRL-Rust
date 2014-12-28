@@ -12,15 +12,15 @@ mod player;
 
 fn main()
 {
-	// Set the config for the game
-	let config = settings::Settings
-	{
-		title: "QuakeRL".to_string(),
-		window_width: 800,
-		window_height: 600
-	};
+    // Set the config for the game
+    let config = settings::Settings
+    {
+        title: "QuakeRL".to_string(),
+        window_width: 800,
+        window_height: 600
+    };
 
-	// Create and run the game
-	let mut app = app::App::new(config);
-	app.run();
+    // Create and run the game
+    let mut app = app::App::new(config);
+    app.run();
 }
