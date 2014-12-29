@@ -10,11 +10,9 @@ mod app;
 mod game;
 mod player;
 
-fn main()
-{
+fn main() {
     // Set the config for the game
-    let config = settings::Settings
-    {
+    let config = settings::Settings {
         title: "QuakeRL".to_string(),
         window_width: 800,
         window_height: 600

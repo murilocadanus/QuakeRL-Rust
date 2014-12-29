@@ -5,3 +5,5 @@ src/player.rs
 src/settings.rs
 assets/block.png
 assets/ranger_avatar.png
+Cargo.toml
+Cargo.lock

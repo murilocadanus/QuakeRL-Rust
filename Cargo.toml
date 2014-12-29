@@ -7,6 +7,11 @@ authors = ["Murilo Cadanus da Costa <murilocadanus@gmail.com>"]
 [[bin]]
 name = "quakerl"
 
+[features]
+
+debug = []
+debug_sprite = []
+
 [dependencies.piston]
 git = "https://github.com/pistondevelopers/piston"
 
