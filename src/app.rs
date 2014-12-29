@@ -35,7 +35,6 @@ impl App {
         let mut game = Game {
             render: render,
             player: player,
-            rotation: 0.0
         };
 
         // Iterate the main game loop

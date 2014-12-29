@@ -3,7 +3,6 @@ extern crate graphics;
 use shader_version::opengl::OpenGL;
 use opengl_graphics::Gl;
 use piston::graphics::*;
-use sprite::Sprite;
 
 pub struct Render {
     pub gl: Gl,
@@ -22,7 +21,7 @@ impl Render {
         }
     }
 
-    pub fn draw<T: Draw>(&mut self, obj: T) {
+    pub fn draw<T: Draw>(&mut self, obj: &T) {
         obj.draw(self);
     }
 }

@@ -13,7 +13,6 @@ use render::Render;
 pub struct Game {
     pub render: Render,
     pub player: Player,
-    pub rotation: f64,
 }
 
 impl Game {
@@ -22,12 +21,12 @@ impl Game {
         graphics::clear([1.0, ..4], &mut self.render.gl);
 
         // Draw player actor
-        self.render.draw(&self.player.sprite);//, self.rotation);
+        self.render.draw(&self.player.sprite);
     }
 
     pub fn update<W: Window>(&mut self, _: &mut W, args: &UpdateArgs) {
         // Rotate 2 radians per second.
-        self.rotation += 2.0 * args.dt;
+        self.player.sprite.rotation += 2.0 * args.dt;
     }
 
     pub fn press(&mut self, button: Button) {

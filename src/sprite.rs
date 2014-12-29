@@ -1,15 +1,15 @@
 extern crate graphics;
 
 use opengl_graphics::Texture;
-use render::{Render, Draw};
-
-use opengl_graphics::Gl;
 use piston::graphics::*;
+
+use render::{Render, Draw};
 
 // abstract this to an actor
 pub struct Sprite {
     pub x: f64,
     pub y: f64,
+    pub rotation: f64,
     pub image: Texture,
 }
 
@@ -19,14 +19,15 @@ impl Sprite {
         Sprite {
             x: 0.0,
             y: 0.0,
+            rotation: 0.0,
             image: image,
         }
     }
 }
 
-pub impl Draw for Sprite {
+impl Draw for Sprite {
     //pub fn draw(&mut self, sprite: &Sprite, rotation: f64) {
-    pub fn draw(&self, render: &mut Render) {
+    fn draw(&self, render: &mut Render) {
         // find a way to get w/h from texture private width/height
         let w = 40f64;
         let h = 40f64;
@@ -36,7 +37,7 @@ pub impl Draw for Sprite {
         // Draw the player
         let sprite_context = &render.ctx
             .trans(self.x - hw, self.y - hh)
-            //.rot_rad(rotation)
+            .rot_rad(self.rotation)
             .trans(-hw, -hh)
         ;
 
