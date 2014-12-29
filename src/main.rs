@@ -7,8 +7,10 @@ extern crate event;
 
 mod settings;
 mod app;
+mod render;
 mod game;
 mod player;
+mod sprite;
 
 fn main() {
     // Set the config for the game

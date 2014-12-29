@@ -1,4 +1,4 @@
-use shader_version::opengl::OpenGL::_3_2;
+use shader_version::opengl::OpenGL;
 use settings::Settings;
 use sdl2_window::Sdl2Window;
 
@@ -19,27 +19,21 @@ impl App {
         // Set the namespaces
         use std::cell::RefCell;
         use event::{ Events, RenderEvent, UpdateEvent, PressEvent };
-        use opengl_graphics::{ Gl, Texture };
         use game::Game;
         use player::Player;
+        use render::Render;
 
         // Create the window
         let window = RefCell::new(self.window());
+        let render = Render::new(self.config.window_width as f64, self.config.window_height as f64);
 
-        // Load player image
-        let image = Path::new("./assets/ranger_avatar.png");
-        let image = Texture::from_path(&image).unwrap();
-
-        // Create the player
-        let player = Player {
-            x: (self.config.window_width/2) as f64,
-            y: (self.config.window_height/2) as f64,
-            image: image
-        };
+        let mut player = Player::from_path(&Path::new("./assets/ranger_avatar.png"));
+        player.sprite.x = (self.config.window_width / 2) as f64;
+        player.sprite.y = (self.config.window_height / 2) as f64;
 
         // Create a new game and run it.
         let mut game = Game {
-            gl: Gl::new(_3_2),
+            render: render,
             player: player,
             rotation: 0.0
         };
@@ -67,6 +61,6 @@ impl App {
         };
 
         // Create SDL Window
-        Sdl2Window::new(_3_2, window_settings)
+        Sdl2Window::new(OpenGL::_3_2, window_settings)
     }
 }

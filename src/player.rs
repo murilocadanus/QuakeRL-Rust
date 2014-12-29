@@ -1,8 +1,13 @@
-use opengl_graphics::Texture;
+use sprite::Sprite;
 
-// abstract this to an actor
 pub struct Player {
-    pub x: f64,
-    pub y: f64,
-    pub image: Texture
+    pub sprite: Sprite,
+}
+
+impl Player {
+    pub fn from_path(path: &Path) -> Player {
+        Player {
+            sprite: Sprite::from_path(path),
+        }
+    }
 }
