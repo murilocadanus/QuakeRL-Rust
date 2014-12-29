@@ -21,7 +21,7 @@ impl Game {
         graphics::clear([1.0, ..4], &mut self.render.gl);
 
         // Draw player actor
-        self.render.draw(&self.player.sprite);
+        self.render.draw(&self.player);
     }
 
     pub fn update<W: Window>(&mut self, _: &mut W, args: &UpdateArgs) {

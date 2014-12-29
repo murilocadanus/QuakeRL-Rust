@@ -26,7 +26,6 @@ impl Sprite {
 }
 
 impl Draw for Sprite {
-    //pub fn draw(&mut self, sprite: &Sprite, rotation: f64) {
     fn draw(&self, render: &mut Render) {
         // find a way to get w/h from texture private width/height
         let w = 40f64;
