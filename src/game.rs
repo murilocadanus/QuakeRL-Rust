@@ -1,14 +1,12 @@
 extern crate graphics;
 extern crate input;
 
-use self::graphics::*;
 use self::input::{Button, Key};
 
 use piston::RenderArgs;
 use piston::UpdateArgs;
-use event::Window;
 use player::Player;
-use render::Render;
+use render::{Render, RenderState};
 
 pub struct Game {
     pub render: Render,
@@ -16,15 +14,18 @@ pub struct Game {
 }
 
 impl Game {
-    pub fn render<W: Window>(&mut self, _: &mut W, _: &RenderArgs) {
-        // Clear the screen
-        graphics::clear([1.0, ..4], &mut self.render.gl);
+    pub fn render(&mut self, _: &RenderArgs) {
+        let state = RenderState {
+            enable_alpha: true,
+            clear: Some([0.0, ..4]),
+        };
 
-        // Draw player actor
+        self.render.state_push(state);
         self.render.draw(&self.player);
+        self.render.state_pop(); // how to auto pop?
     }
 
-    pub fn update<W: Window>(&mut self, _: &mut W, args: &UpdateArgs) {
+    pub fn update(&mut self, args: &UpdateArgs) {
         // Rotate 2 radians per second.
         self.player.sprite.rotation += 2.0 * args.dt;
     }

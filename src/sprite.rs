@@ -27,11 +27,9 @@ impl Sprite {
 
 impl Draw for Sprite {
     fn draw(&self, render: &mut Render) {
-        // find a way to get w/h from texture private width/height
-        let w = 40f64;
-        let h = 40f64;
-        let hw = w / 2.0f64;
-        let hh = h / 2.0f64;
+        let (w, h) = self.image.get_size();
+        let hw = w as f64 / 2.0;
+        let hh = h as f64 / 2.0;
 
         // Draw the player
         let sprite_context = &render.ctx
@@ -42,7 +40,7 @@ impl Draw for Sprite {
 
         if cfg!(feature="debug_sprite") {
             // add border to sprite so we can debug it as we do not have a nice bg yet
-            Rectangle::new([1.0, 0.0, 0.0, 1.0]).draw([-1.0, -1.0, w + 2.0, h + 2.0], sprite_context, &mut render.gl);
+            Rectangle::new([1.0, 0.0, 1.0, 1.0]).draw([-1.0, -1.0, w as f64 + 2.0, h as f64 + 2.0], sprite_context, &mut render.gl);
         }
 
         graphics::image(&self.image, sprite_context, &mut render.gl);

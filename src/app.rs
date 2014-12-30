@@ -39,9 +39,9 @@ impl App {
 
         // Iterate the main game loop
         for e in Events::new(&window) {
-            e.render(|r| game.render(window.borrow_mut().deref_mut(), r));
-            e.update(|u| game.update(window.borrow_mut().deref_mut(), u));
-            e.press(|k| game.press(k));
+            e.render(|args| game.render(args));
+            e.update(|args| game.update(args));
+            e.press (|args| game.press(args));
         }
     }
 
