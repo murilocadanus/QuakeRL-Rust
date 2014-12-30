@@ -22,6 +22,7 @@ impl App {
         use opengl_graphics::{ Gl, Texture };
         use game::Game;
         use player::Player;
+        use aabb::AABB;
 
         // Create the window
         let window = RefCell::new(self.window());
@@ -32,16 +33,25 @@ impl App {
 
         // Create the player
         let player = Player {
-            x: (self.config.window_width/2) as f64,
-            y: (self.config.window_height/2) as f64,
-            image: image
+            pos: [(self.config.window_width/2) as f64, (self.config.window_height/2) as f64],
+            image: image,
+            aabb: AABB::new((self.config.window_width/2) as f64,
+                            (self.config.window_height/2) as f64,
+                            40f64,
+                            40f64)
         };
 
         // Create a new game and run it.
         let mut game = Game {
             gl: Gl::new(_3_2),
             player: player,
-            rotation: 0.0
+            rotation: 0.0,
+            top_wall_aabb: AABB::new(
+                self.config.window_width as f64 / 2.0,
+                8.0,
+                self.config.window_width as f64,
+                8.0 * 2.0
+            ),
         };
 
         // Iterate the main game loop

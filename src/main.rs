@@ -9,6 +9,7 @@ mod settings;
 mod app;
 mod game;
 mod player;
+mod aabb;
 
 fn main() {
     // Set the config for the game

@@ -9,11 +9,13 @@ use piston::RenderArgs;
 use piston::UpdateArgs;
 use event::Window;
 use player::Player;
+use aabb::AABB;
 
 pub struct Game {
     pub gl: Gl,
     pub player: Player,
     pub rotation: f64,
+    pub top_wall_aabb: AABB
 }
 
 impl Game {
@@ -37,7 +39,7 @@ impl Game {
 
         // Draw the player
         let player_context = &context
-            .trans(self.player.x - hw, self.player.y - hh)
+            .trans(self.player.pos[0] - hw, self.player.pos[1] - hh)
             .rot_rad(self.rotation)
             .trans(-hw, -hh)
         ;
@@ -50,7 +52,7 @@ impl Game {
         graphics::image(&self.player.image, player_context, &mut self.gl);
 
         if cfg!(feature="debug_sprite") {
-            let player_context = &context.trans(self.player.x - hw, self.player.y - hh);
+            let player_context = &context.trans(self.player.pos[0] - hw, self.player.pos[1] - hh);
             Rectangle::new([1.0, 0.0, 1.0, 1.0]).draw([-2.0, -2.0, 5.0, 5.0], player_context, &mut self.gl);
         }
     }
@@ -62,10 +64,21 @@ impl Game {
 
     pub fn press(&mut self, button: Button) {
         match button {
-            Button::Keyboard(Key::Up)       => { self.player.y -= 10.0 },
-            Button::Keyboard(Key::Down)     => { self.player.y += 10.0 },
-            Button::Keyboard(Key::Left)     => { self.player.x -= 10.0 },
-            Button::Keyboard(Key::Right)    => { self.player.x += 10.0 },
+            Button::Keyboard(Key::Up)       => {
+                if(self.player.aabb.is_collided_with(&self.top_wall_aabb)) {
+                    self.player.pos[1] = self.player.pos[1];
+                    self.player.aabb.center[1] = self.player.aabb.center[1];
+                } else {
+                    self.player.pos[1] -= 10.0;
+                    self.player.aabb.center[1] -= 10.0;
+                }
+            },
+            Button::Keyboard(Key::Down)     => {
+                self.player.pos[1] += 10.0;
+                self.player.aabb.center[1] += 10.0;
+            },
+            Button::Keyboard(Key::Left)     => { self.player.pos[0] -= 10.0 },
+            Button::Keyboard(Key::Right)    => { self.player.pos[0] += 10.0 },
             _ => {}
         }
     }
