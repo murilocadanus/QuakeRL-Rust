@@ -8,3 +8,5 @@ assets/block.png
 assets/ranger_avatar.png
 Cargo.toml
 Cargo.lock
+src/sprite.rs
+src/render.rs

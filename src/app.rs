@@ -1,4 +1,4 @@
-use shader_version::opengl::OpenGL::_3_2;
+use shader_version::opengl::OpenGL;
 use settings::Settings;
 use sdl2_window::Sdl2Window;
 
@@ -19,31 +19,22 @@ impl App {
         // Set the namespaces
         use std::cell::RefCell;
         use event::{ Events, RenderEvent, UpdateEvent, PressEvent };
-        use opengl_graphics::{ Gl, Texture };
         use game::Game;
         use player::Player;
         use aabb::AABB;
+        use render::Render;
 
         // Create the window
         let window = RefCell::new(self.window());
-
-        // Load player image
-        let image = Path::new("./assets/ranger_avatar.png");
-        let image = Texture::from_path(&image).unwrap();
+        let render = Render::new(self.config.window_width as f64, self.config.window_height as f64);
 
         // Create the player
-        let player = Player {
-            pos: [(self.config.window_width/2) as f64, (self.config.window_height/2) as f64],
-            image: image,
-            aabb: AABB::new((self.config.window_width/2) as f64,
-                            (self.config.window_height/2) as f64,
-                            40f64,
-                            40f64)
-        };
+        let mut player = Player::from_path(&Path::new("./assets/ranger_avatar.png"));
+        player.set_pos([(self.config.window_width / 2) as f64, (self.config.window_height / 2) as f64]);
 
         // Create a new game and run it.
         let mut game = Game {
-            gl: Gl::new(_3_2),
+            render: render,
             player: player,
             rotation: 0.0,
             top_wall_aabb: AABB::new(
@@ -56,9 +47,9 @@ impl App {
 
         // Iterate the main game loop
         for e in Events::new(&window) {
-            e.render(|r| game.render(window.borrow_mut().deref_mut(), r));
-            e.update(|u| game.update(window.borrow_mut().deref_mut(), u));
-            e.press(|k| game.press(k));
+            e.render(|args| game.render(args));
+            e.update(|args| game.update(args));
+            e.press (|args| game.press(args));
         }
     }
 
@@ -77,6 +68,6 @@ impl App {
         };
 
         // Create SDL Window
-        Sdl2Window::new(_3_2, window_settings)
+        Sdl2Window::new(OpenGL::_3_2, window_settings)
     }
 }
