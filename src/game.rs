@@ -6,13 +6,16 @@ use self::input::{Button, Key};
 use piston::RenderArgs;
 use piston::UpdateArgs;
 use player::Player;
-use aabb::AABB;
+use collider::AABB;
 use render::{Render, RenderState};
 
 pub struct Game {
     pub render: Render,
     pub player: Player,
-    pub top_wall_aabb: AABB
+    pub top_wall: AABB,
+    pub bottom_wall: AABB,
+    pub left_wall: AABB,
+    pub right_wall: AABB
 }
 
 impl Game {
@@ -34,21 +37,42 @@ impl Game {
 
     pub fn press(&mut self, button: Button) {
         match button {
-            Button::Keyboard(Key::Up)       => {
-                if(self.player.aabb.is_collided_with(&self.top_wall_aabb)) {
-                    self.player.pos[1] = self.player.pos[1];
+            Button::Keyboard(Key::Up) => {
+                if(self.player.aabb.is_collided_with(&self.top_wall)) {
+                    self.player.sprite.y = self.player.sprite.y;
                     self.player.aabb.center[1] = self.player.aabb.center[1];
                 } else {
-                    self.player.pos[1] -= 10.0;
+                    self.player.sprite.y -= 10.0;
                     self.player.aabb.center[1] -= 10.0;
                 }
             },
-            Button::Keyboard(Key::Down)     => {
-                self.player.pos[1] += 10.0;
-                self.player.aabb.center[1] += 10.0;
+            Button::Keyboard(Key::Down) => {
+                if(self.player.aabb.is_collided_with(&self.bottom_wall)) {
+                    self.player.sprite.y = self.player.sprite.y;
+                    self.player.aabb.center[1] = self.player.aabb.center[1];
+                } else {
+                    self.player.sprite.y += 10.0;
+                    self.player.aabb.center[1] += 10.0;
+                }
             },
-            Button::Keyboard(Key::Left)     => { self.player.pos[0] -= 10.0 },
-            Button::Keyboard(Key::Right)    => { self.player.pos[0] += 10.0 },
+            Button::Keyboard(Key::Left) => {
+                if(self.player.aabb.is_collided_with(&self.left_wall)) {
+                    self.player.sprite.x = self.player.sprite.x;
+                    self.player.aabb.center[0] = self.player.aabb.center[0];
+                } else {
+                    self.player.sprite.x -= 10.0;
+                    self.player.aabb.center[0] -= 10.0;
+                }
+            },
+            Button::Keyboard(Key::Right) => {
+                if(self.player.aabb.is_collided_with(&self.right_wall)) {
+                    self.player.sprite.x = self.player.sprite.x;
+                    self.player.aabb.center[0] = self.player.aabb.center[0];
+                } else {
+                    self.player.sprite.x += 10.0;
+                    self.player.aabb.center[0] += 10.0;
+                }
+            },
             _ => {}
         }
     }

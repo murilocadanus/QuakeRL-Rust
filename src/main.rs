@@ -11,7 +11,7 @@ mod app;
 mod render;
 mod game;
 mod player;
-mod aabb;
+mod collider;
 mod sprite;
 
 fn main() {

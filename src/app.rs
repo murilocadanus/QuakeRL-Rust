@@ -21,7 +21,7 @@ impl App {
         use event::{ Events, RenderEvent, UpdateEvent, PressEvent };
         use game::Game;
         use player::Player;
-        use aabb::AABB;
+        use collider::AABB;
         use render::Render;
 
         // Create the window
@@ -36,13 +36,30 @@ impl App {
         let mut game = Game {
             render: render,
             player: player,
-            rotation: 0.0,
-            top_wall_aabb: AABB::new(
+            top_wall: AABB::new(
                 self.config.window_width as f64 / 2.0,
                 8.0,
                 self.config.window_width as f64,
                 8.0 * 2.0
             ),
+            bottom_wall: AABB::new(
+                self.config.window_width as f64 / 2.0,
+                self.config.window_height as f64 - 8.0,
+                self.config.window_width as f64,
+                8.0 * 2.0
+            ),
+            left_wall: AABB::new(
+                -8.0,
+                self.config.window_height as f64 / 2.0,
+                8.0 * 2.0,
+                self.config.window_height as f64
+            ),
+            right_wall: AABB::new(
+                self.config.window_width as f64 + 8.0,
+                self.config.window_height as f64 / 2.0,
+                8.0 * 2.0,
+                self.config.window_height as f64
+            )
         };
 
         // Iterate the main game loop
