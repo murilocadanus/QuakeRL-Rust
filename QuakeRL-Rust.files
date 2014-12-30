@@ -5,7 +5,9 @@ src/player.rs
 src/settings.rs
 assets/block.png
 assets/ranger_avatar.png
+assets/tileset.png
 Cargo.toml
 Cargo.lock
 src/sprite.rs
 src/render.rs
+src/tilemap.rs

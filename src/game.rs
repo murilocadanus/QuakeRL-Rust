@@ -9,10 +9,12 @@ use piston::UpdateArgs;
 use event::Window;
 use player::Player;
 use render::Render;
+use tilemap::TileMap;
 
 pub struct Game {
     pub render: Render,
     pub player: Player,
+    pub tilemap: TileMap,
 }
 
 impl Game {
@@ -22,6 +24,9 @@ impl Game {
 
         // Draw player actor
         self.render.draw(&self.player);
+
+        // Draw the tilemap
+        self.render.draw(&self.tilemap);
     }
 
     pub fn update<W: Window>(&mut self, _: &mut W, args: &UpdateArgs) {

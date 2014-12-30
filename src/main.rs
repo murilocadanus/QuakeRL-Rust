@@ -11,6 +11,7 @@ mod render;
 mod game;
 mod player;
 mod sprite;
+mod tilemap;
 
 fn main() {
     // Set the config for the game
