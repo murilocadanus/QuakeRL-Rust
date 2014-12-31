@@ -30,7 +30,7 @@ impl App {
 
         // Create the player
         let mut player = Player::from_path(&Path::new("./assets/ranger_avatar.png"));
-        player.set_pos([(self.config.window_width / 2) as f64, (self.config.window_height / 2) as f64]);
+        player.set_pos([80f64, 80f64]);
 
         // Create a new game and run it.
         let mut game = Game {
@@ -38,27 +38,27 @@ impl App {
             player: player,
             top_wall: AABB::new(
                 self.config.window_width as f64 / 2.0,
-                8.0,
-                self.config.window_width as f64,
-                8.0 * 2.0
+                20.0,
+                self.config.window_width,
+                20 * 2 as u32
             ),
             bottom_wall: AABB::new(
                 self.config.window_width as f64 / 2.0,
-                self.config.window_height as f64 - 8.0,
-                self.config.window_width as f64,
-                8.0 * 2.0
+                self.config.window_height as f64 - 20.0,
+                self.config.window_width,
+                20 * 2 as u32
             ),
             left_wall: AABB::new(
-                -8.0,
+                20.0,
                 self.config.window_height as f64 / 2.0,
-                8.0 * 2.0,
-                self.config.window_height as f64
+                20 * 2 as u32,
+                self.config.window_height
             ),
             right_wall: AABB::new(
-                self.config.window_width as f64 + 8.0,
+                self.config.window_width as f64 - 20.0,
                 self.config.window_height as f64 / 2.0,
-                8.0 * 2.0,
-                self.config.window_height as f64
+                20 * 2 as u32,
+                self.config.window_height
             )
         };
 

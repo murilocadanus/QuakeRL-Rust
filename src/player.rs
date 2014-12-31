@@ -9,24 +9,24 @@ pub struct Player {
 
 impl Player {
     pub fn aabb(&self) -> AABB {
-        self.aabb.trans([self.sprite.x, self.sprite.y])
-    }
-
-    pub fn position(&self) -> [f64, ..2] {
-        [self.sprite.x, self.sprite.y]
+        let w = self.aabb.size[0];
+        let h = self.aabb.size[1];
+        self.aabb.trans([w/2, h/2])
     }
 
     pub fn set_pos(&mut self, pos: [f64, ..2]) {
         self.sprite.x = pos[0];
-        self.aabb.center[0] = pos[0];
         self.sprite.y = pos[1];
-        self.aabb.center[1] = pos[1];
+        self.aabb = self.aabb();
     }
 
     pub fn from_path(path: &Path) -> Player {
+        let sprite = Sprite::from_path(path);
+        let (w, h) = sprite.get_size();
+
         Player {
-            sprite: Sprite::from_path(path),
-            aabb: AABB::new(0f64, 0f64, 40f64, 40f64) // UGLY: Change to not use new fn
+            sprite: sprite,
+            aabb: AABB::new(80f64, 80f64, w, h) // UGLY: Change to not use fixed start position
         }
     }
 }
