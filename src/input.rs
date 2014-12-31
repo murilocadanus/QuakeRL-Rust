@@ -47,15 +47,22 @@ impl Input {
         self.buffer.pressed[signal as uint]
     }
 
+    // FIXME: find where is the bug.
+    // there is a old bug (sdl?) when we press LEFT+(UP|DOWN) and then the next (DOWN|UP) is not registered.
+    // try this: right, down, then up.
+    // compare with: left, down then up.
     fn do_press(&mut self, signal: Signal, amount: f64, dt: f64) {
         let idx = signal as uint;
-        self.buffer.pressed[idx] = (amount, dt, 0.0);
+        let (val, press_dt, _) = self.buffer.pressed[idx];
+        //println!("press: {} - {}", val, amount);
+        self.buffer.pressed[idx] = (val + amount, dt, 0.0);
     }
 
-    fn do_release(&mut self, signal: Signal, dt: f64) {
+    fn do_release(&mut self, signal: Signal, amount: f64, dt: f64) {
         let idx = signal as uint;
-        let (_, press_dt, _) = self.buffer.pressed[idx];
-        self.buffer.pressed[idx] = (0.0, press_dt, dt);
+        let (val, press_dt, _) = self.buffer.pressed[idx];
+        //println!("release: {} - {}", val, amount);
+        self.buffer.pressed[idx] = (val - amount, press_dt, dt);
     }
 
     // to_: http://aturon.github.io/style/naming/conversions.html
@@ -78,7 +85,7 @@ impl Input {
 
     pub fn release(&mut self, button: Button, dt: f64) {
         match Input::to_signal(button) {
-            Some((signal, _)) => self.do_release(signal, dt),
+            Some((signal, amount)) => self.do_release(signal, amount, dt),
             None => (),
         }
     }
