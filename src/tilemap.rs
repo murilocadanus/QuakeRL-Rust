@@ -54,6 +54,11 @@ impl TileMap {
         }
     }
 
+    //pub fn build_tiles_from_tileset(&self) {
+      //  self.tiles.push();
+
+    //}
+
     pub fn build_procedural_map(&mut self, width: uint, height: uint, dungeonObjects: uint) -> Vec<uint>
     {
         // Create the map
@@ -227,7 +232,8 @@ impl TileMap {
 
 impl Draw for TileMap {
     fn draw(&self, render: &mut Render) {
-        //render.draw(&self.tileset)
+        //println!("Size of image: {}", &self.tileset.image.);
+        render.draw(&self.tileset);
     }
 }
 

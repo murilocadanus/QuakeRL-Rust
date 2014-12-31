@@ -23,11 +23,15 @@ impl Sprite {
             image: image,
         }
     }
+
+    pub fn get_size(&self) -> (u32, u32) {
+        self.image.get_size()
+    }
 }
 
 impl Draw for Sprite {
     fn draw(&self, render: &mut Render) {
-        let (w, h) = self.image.get_size();
+        let (w, h) = self.get_size();
         let hw = w as f64 / 2.0;
         let hh = h as f64 / 2.0;
 
