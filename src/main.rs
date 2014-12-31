@@ -10,6 +10,7 @@ mod app;
 mod render;
 mod game;
 mod player;
+mod collider;
 mod sprite;
 mod input;
 

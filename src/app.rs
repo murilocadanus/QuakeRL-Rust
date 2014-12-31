@@ -21,6 +21,7 @@ impl App {
         use event::{ Events, RenderEvent, UpdateEvent, PressEvent, ReleaseEvent };
         use game::Game;
         use player::Player;
+        use collider::AABB;
         use render::Render;
         use input::Input;
 
@@ -29,8 +30,9 @@ impl App {
         let render = Render::new(self.config.window_width as f64, self.config.window_height as f64);
         let input = Input::new();
 
+        // Create the player
         let mut player = Player::from_path(&Path::new("./assets/ranger_avatar.png"));
-        player.sprite.pos = [(self.config.window_width / 2) as f64, (self.config.window_height / 2) as f64];
+        player.set_pos([80f64, 80f64]);
 
         // Create a new game and run it.
         let mut game = Game {
@@ -38,6 +40,30 @@ impl App {
             input: input,
             player: player,
             timestamp: 0.0,
+            top_wall: AABB::new(
+                self.config.window_width as f64 / 2.0,
+                20.0,
+                self.config.window_width,
+                20 * 2 as u32
+            ),
+            bottom_wall: AABB::new(
+                self.config.window_width as f64 / 2.0,
+                self.config.window_height as f64 - 20.0,
+                self.config.window_width,
+                20 * 2 as u32
+            ),
+            left_wall: AABB::new(
+                20.0,
+                self.config.window_height as f64 / 2.0,
+                20 * 2 as u32,
+                self.config.window_height
+            ),
+            right_wall: AABB::new(
+                self.config.window_width as f64 - 20.0,
+                self.config.window_height as f64 / 2.0,
+                20 * 2 as u32,
+                self.config.window_height
+            )
         };
 
         // Iterate the main game loop
