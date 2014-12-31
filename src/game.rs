@@ -1,16 +1,20 @@
 extern crate graphics;
 extern crate input;
-
-use self::input::{Button, Key};
+extern crate vecmath;
 
 use piston::RenderArgs;
 use piston::UpdateArgs;
 use player::Player;
+use self::vecmath::*;
+
 use render::{Render, RenderState};
+use input::{Input, Signal};
 
 pub struct Game {
     pub render: Render,
+    pub input: Input,
     pub player: Player,
+    pub timestamp: f64,
 }
 
 impl Game {
@@ -22,21 +26,22 @@ impl Game {
 
         self.render.state_push(state);
         self.render.draw(&self.player);
-        self.render.state_pop(); // how to auto pop?
+        self.render.state_pop();
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
         // Rotate 2 radians per second.
         self.player.sprite.rotation += 2.0 * args.dt;
-    }
 
-    pub fn press(&mut self, button: Button) {
-        match button {
-            Button::Keyboard(Key::Up)       => { self.player.sprite.y -= 10.0 },
-            Button::Keyboard(Key::Down)     => { self.player.sprite.y += 10.0 },
-            Button::Keyboard(Key::Left)     => { self.player.sprite.x -= 10.0 },
-            Button::Keyboard(Key::Right)    => { self.player.sprite.x += 10.0 },
-            _ => {}
-        }
+        let x = self.input.get_signal(Signal::AxisX);
+        let y = self.input.get_signal(Signal::AxisY);
+
+        let dir = if x == 0.0 && y == 0.0 {
+            [0.0, 0.0]
+        } else {
+            vec2_normalized([x, y])
+        };
+
+        self.player.sprite.pos = vec2_add(self.player.sprite.pos, dir);
     }
 }

@@ -46,13 +46,14 @@ impl Render {
     }
 
     pub fn state_pop(&mut self) -> RenderState {
-        let ret = self.states.pop();
-
+        assert!(self.states.len() > 1, "Unbalanced push<>pop.");
+        let ret = self.states.pop().unwrap();
         let state = self.states.pop().unwrap();
+
         self.state_apply(&state);
         self.states.push(state);
 
-        ret.unwrap()
+        ret
     }
 
     fn state_apply(&mut self, state: &RenderState) {

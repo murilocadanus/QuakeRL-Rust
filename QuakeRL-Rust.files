@@ -9,3 +9,4 @@ Cargo.toml
 Cargo.lock
 src/sprite.rs
 src/render.rs
+src/input.rs

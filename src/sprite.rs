@@ -2,13 +2,11 @@ extern crate graphics;
 
 use opengl_graphics::Texture;
 use piston::graphics::*;
-
 use render::{Render, Draw};
 
 // abstract this to an actor
 pub struct Sprite {
-    pub x: f64,
-    pub y: f64,
+    pub pos: [f64, ..2],
     pub rotation: f64,
     pub image: Texture,
 }
@@ -17,8 +15,7 @@ impl Sprite {
     pub fn from_path(path: &Path) -> Sprite {
         let image = Texture::from_path(path).unwrap();
         Sprite {
-            x: 0.0,
-            y: 0.0,
+            pos: [0.0, 0.0],
             rotation: 0.0,
             image: image,
         }
@@ -33,7 +30,7 @@ impl Draw for Sprite {
 
         // Draw the player
         let sprite_context = &render.ctx
-            .trans(self.x - hw, self.y - hh)
+            .trans(self.pos[0] - hw, self.pos[1] - hh)
             .rot_rad(self.rotation)
             .trans(-hw, -hh)
         ;
@@ -46,7 +43,7 @@ impl Draw for Sprite {
         graphics::image(&self.image, sprite_context, &mut render.gl);
 
         if cfg!(feature="debug_sprite") {
-            let sprite_context = &render.ctx.trans(self.x - hw, self.y - hh);
+            let sprite_context = &render.ctx.trans(self.pos[0] - hw, self.pos[1] - hh);
             Rectangle::new([1.0, 0.0, 1.0, 1.0]).draw([-2.0, -2.0, 5.0, 5.0], sprite_context, &mut render.gl);
         }
     }

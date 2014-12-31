@@ -4,7 +4,6 @@ extern crate sdl2_window;
 extern crate opengl_graphics;
 extern crate shader_version;
 extern crate event;
-extern crate current;
 
 mod settings;
 mod app;
@@ -12,6 +11,7 @@ mod render;
 mod game;
 mod player;
 mod sprite;
+mod input;
 
 fn main() {
     // Set the config for the game

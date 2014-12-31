@@ -18,30 +18,35 @@ impl App {
     pub fn run(&mut self) {
         // Set the namespaces
         use std::cell::RefCell;
-        use event::{ Events, RenderEvent, UpdateEvent, PressEvent };
+        use event::{ Events, RenderEvent, UpdateEvent, PressEvent, ReleaseEvent };
         use game::Game;
         use player::Player;
         use render::Render;
+        use input::Input;
 
         // Create the window
         let window = RefCell::new(self.window());
         let render = Render::new(self.config.window_width as f64, self.config.window_height as f64);
+        let input = Input::new();
 
         let mut player = Player::from_path(&Path::new("./assets/ranger_avatar.png"));
-        player.sprite.x = (self.config.window_width / 2) as f64;
-        player.sprite.y = (self.config.window_height / 2) as f64;
+        player.sprite.pos = [(self.config.window_width / 2) as f64, (self.config.window_height / 2) as f64];
 
         // Create a new game and run it.
         let mut game = Game {
             render: render,
+            input: input,
             player: player,
+            timestamp: 0.0,
         };
 
         // Iterate the main game loop
+        let mut dt : f64 = 0.0;
         for e in Events::new(&window) {
-            e.render(|args| game.render(args));
-            e.update(|args| game.update(args));
-            e.press (|args| game.press(args));
+            e.render (|args|   game.render(args));
+            e.update (|args| { game.update(args); dt = args.dt; });
+            e.press  (|args|   game.input.press(args, dt));
+            e.release(|args|   game.input.release(args, dt));
         }
     }
 
