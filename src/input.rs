@@ -1,16 +1,25 @@
 use piston::input::{Button, Key};
 
-const MAX_INPUT : uint = 4; // find how to use size of Signal
+/// TEMPORARY: A number maximum for input signals. This should be the size of enum Signal.
+const MAX_INPUT : uint = 2; // find how to use size of Signal
 
+/// An Input to Signal conversor.
+/// Input is a kind of a conversor of input buttons to input signals.
+/// All input are converted to signals in the range of [-1.0, 1.0].
 pub struct Input {
+    /// An internal buffer for current input state.
     buffer: InputBuffer,
 }
 
+/// A signal is an ecoding of one or more keys.
+/// Related inputs are codified together, ie. KeyLeft and KeyRight are considered signals
+/// on axis x.
 pub enum Signal {
     AxisX,
     AxisY,
 }
 
+/// Internal buffer that hold all needed states from current inputs.
 struct InputBuffer {
     pressed: [(f64, f64, f64), ..MAX_INPUT],
 //    previous_pressed: [(f32, f64, f64), ..MAX_INPUT],
@@ -38,12 +47,25 @@ impl Input {
     }
 
     pub fn get_signal(&mut self, signal: Signal) -> f64 {
+        //! Get a specified signal current value.
+        //!
+        //! Example:
+        //!
+        //! ```
+        //! let mut input = Input::new();
+        //!
+        //! input.press(Button::Keyboard(Key::Up), 0.0);
+        //! let y = input.get_signal(Signal::AxisY);
+        //! assert_eq!(y, -1.0);
+        //! ```
         let (val, _, _) = self.buffer.pressed[signal as uint];
         val
     }
 
     #[allow(dead_code)]
     pub fn get_signal_data(&mut self, signal: Signal) -> (f64, f64, f64) {
+        //! Get a specified signal stored data in the form of a 3-tuple of f64:
+        //! (signal value, milliseconds begin/press time, milliseconds end/release time)
         self.buffer.pressed[signal as uint]
     }
 
@@ -88,5 +110,55 @@ impl Input {
             Some((signal, amount)) => self.do_release(signal, amount, dt),
             None => (),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use piston::input::{Button, Key};
+
+    #[test]
+    fn signal_axisx_opposite_press()
+    {
+        let mut input = Input::new();
+
+        input.press(Button::Keyboard(Key::Left), 0.0);
+        let x = input.get_signal(Signal::AxisX);
+        assert_eq!(x, -1.0);
+
+        input.press(Button::Keyboard(Key::Right), 1.0);
+        let x = input.get_signal(Signal::AxisX);
+        assert_eq!(x, 0.0);
+
+        input.release(Button::Keyboard(Key::Left), 2.0);
+        let x = input.get_signal(Signal::AxisX);
+        assert_eq!(x, 1.0);
+
+        input.release(Button::Keyboard(Key::Right), 3.0);
+        let x = input.get_signal(Signal::AxisX);
+        assert_eq!(x, 0.0);
+    }
+
+    #[test]
+    fn signal_axisy_opposite_press()
+    {
+        let mut input = Input::new();
+
+        input.press(Button::Keyboard(Key::Up), 0.0);
+        let y = input.get_signal(Signal::AxisY);
+        assert_eq!(y, -1.0);
+
+        input.press(Button::Keyboard(Key::Down), 1.0);
+        let y = input.get_signal(Signal::AxisY);
+        assert_eq!(y, 0.0);
+
+        input.release(Button::Keyboard(Key::Up), 2.0);
+        let y = input.get_signal(Signal::AxisY);
+        assert_eq!(y, 1.0);
+
+        input.release(Button::Keyboard(Key::Down), 3.0);
+        let y = input.get_signal(Signal::AxisY);
+        assert_eq!(y, 0.0);
     }
 }
