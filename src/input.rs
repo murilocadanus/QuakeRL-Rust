@@ -75,7 +75,7 @@ impl Input {
     // compare with: left, down then up.
     fn do_press(&mut self, signal: Signal, amount: f64, dt: f64) {
         let idx = signal as uint;
-        let (val, press_dt, _) = self.buffer.pressed[idx];
+        let (val, _, _) = self.buffer.pressed[idx];
         //println!("press: {} - {}", val, amount);
         self.buffer.pressed[idx] = (val + amount, dt, 0.0);
     }

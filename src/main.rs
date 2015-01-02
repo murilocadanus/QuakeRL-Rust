@@ -1,4 +1,6 @@
+#![feature(default_type_params)]
 #![feature(globs)]
+
 extern crate piston;
 extern crate sdl2_window;
 extern crate opengl_graphics;
@@ -19,7 +21,7 @@ fn main() {
     let config = settings::Settings {
         title: "QuakeRL".to_string(),
         window_width: 800,
-        window_height: 600
+        window_height: 600,
     };
 
     // Create and run the game

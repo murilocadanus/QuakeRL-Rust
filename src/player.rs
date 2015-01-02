@@ -1,22 +1,38 @@
+extern crate vecmath;
+
+use self::vecmath::*;
 use collider::{AABB};
 use sprite::Sprite;
 use render::{Render, Draw};
 
 pub struct Player {
-    pub sprite: Sprite,
-    pub aabb: AABB
+    sprite: Sprite,
+    aabb: AABB,
 }
 
 impl Player {
-    pub fn aabb(&self) -> AABB {
-        let w = self.aabb.size[0];
-        let h = self.aabb.size[1];
-        self.aabb.trans([w/2, h/2])
+
+    #[allow(dead_code)]
+    pub fn get_pos(&self) -> [f64, ..2] {
+        self.sprite.pos
     }
 
     pub fn set_pos(&mut self, pos: [f64, ..2]) {
         self.sprite.pos = pos;
-        self.aabb = self.aabb();
+        self.aabb.set_pos([self.sprite.pos[0] + 20.0, self.sprite.pos[1] + 20.0]);
+    }
+
+    pub fn add_pos(&mut self, pos: [f64, ..2]) {
+        self.sprite.pos = vec2_add(self.sprite.pos, pos);
+        self.aabb.set_pos([self.sprite.pos[0] + 20.0, self.sprite.pos[1] + 20.0]);
+    }
+
+    pub fn add_rotation(&mut self, rot: f64) {
+        self.sprite.rotation += rot;
+    }
+
+    pub fn intersect(&self, other: &AABB) -> bool {
+        self.aabb.intersect_aabb(other)
     }
 
     pub fn from_path(path: &Path) -> Player {
@@ -25,13 +41,14 @@ impl Player {
 
         Player {
             sprite: sprite,
-            aabb: AABB::new(80f64, 80f64, w, h) // UGLY: Change to not use fixed start position
+            aabb: AABB::new([0.0, 0.0], [w as f64 / 2.0, h as f64 / 2.0]),
         }
     }
 }
 
 impl Draw for Player {
     fn draw(&self, render: &mut Render) {
-        render.draw(&self.sprite)
+        render.draw(&self.aabb);
+        render.draw(&self.sprite);
     }
 }
