@@ -34,14 +34,13 @@ impl Game {
         self.render.draw(&self.bottom_wall);
         self.render.draw(&self.left_wall);
         self.render.draw(&self.right_wall);
-        self.render.draw(&self.player.aabb);
         self.render.draw(&self.player);
         self.render.state_pop();
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
         // Rotate 2 radians per second.
-        self.player.sprite.rotation += 0.0 * args.dt;
+        self.player.add_rotation(0.0 * args.dt);
 
         let x = self.input.get_signal(Signal::AxisX);
         let y = self.input.get_signal(Signal::AxisY);
@@ -52,53 +51,24 @@ impl Game {
             vec2_normalized([x, y])
         };
 
-        self.player.sprite.pos = vec2_add(self.player.sprite.pos, dir);
-    }
+        self.player.add_pos(dir);
 
-/*
-Do the collision check on update each frame base on the player movement.
-*/
-/*
-    pub fn press(&mut self, button: Button) {
-        match button {
-            Button::Keyboard(Key::Up) => {
-                if self.player.aabb.is_collided_with(&self.top_wall) {
-                    self.player.sprite.y = self.player.sprite.y;
-                    self.player.aabb.center[1] = self.player.aabb.center[1];
-                } else {
-                    self.player.sprite.y -= 40.0;
-                    self.player.aabb.center[1] -= 40.0;
-                }
-            },
-            Button::Keyboard(Key::Down) => {
-                if self.player.aabb.is_collided_with(&self.bottom_wall) {
-                    self.player.sprite.y = self.player.sprite.y;
-                    self.player.aabb.center[1] = self.player.aabb.center[1];
-                } else {
-                    self.player.sprite.y += 40.0;
-                    self.player.aabb.center[1] += 40.0;
-                }
-            },
-            Button::Keyboard(Key::Left) => {
-                if self.player.aabb.is_collided_with(&self.left_wall) {
-                    self.player.sprite.x = self.player.sprite.x;
-                    self.player.aabb.center[0] = self.player.aabb.center[0];
-                } else {
-                    self.player.sprite.x -= 40.0;
-                    self.player.aabb.center[0] -= 40.0;
-                }
-            },
-            Button::Keyboard(Key::Right) => {
-                if self.player.aabb.is_collided_with(&self.right_wall) {
-                    self.player.sprite.x = self.player.sprite.x;
-                    self.player.aabb.center[0] = self.player.aabb.center[0];
-                } else {
-                    self.player.sprite.x += 40.0;
-                    self.player.aabb.center[0] += 40.0;
-                }
-            },
-            _ => {}
+        // TODO: create something to manage this. a world?
+        // TODO: add name to things for debugging?
+        // TODO: do a "physics" update elsewhere with fixed dt?
+        let walls = [
+            (&self.top_wall, "top"),
+            (&self.bottom_wall, "bottom"),
+            (&self.left_wall, "left"),
+            (&self.right_wall, "right"),
+        ];
+        for t in walls.iter() {
+            let &(w, _/*n*/) = t;
+            if self.player.intersect(w) {
+                //println!("collided with {} - {} - {}", n, dir, self.player.get_pos());
+                self.player.add_pos([-dir[0], -dir[1]]);
+            }
         }
+
     }
-    */
 }

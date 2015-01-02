@@ -18,21 +18,24 @@ impl App {
     pub fn run(&mut self) {
         // Set the namespaces
         use std::cell::RefCell;
-        use event::{ Events, RenderEvent, UpdateEvent, PressEvent, ReleaseEvent };
+        use event::Events;
         use game::Game;
         use player::Player;
         use collider::AABB;
         use render::Render;
         use input::Input;
 
+        let w = self.config.window_width as f64;
+        let h = self.config.window_height as f64;
+
         // Create the window
         let window = RefCell::new(self.window());
-        let render = Render::new(self.config.window_width as f64, self.config.window_height as f64);
+        let render = Render::new(w, h);
         let input = Input::new();
 
         // Create the player
         let mut player = Player::from_path(&Path::new("./assets/ranger_avatar.png"));
-        player.set_pos([80f64, 80f64]);
+        player.set_pos([40.0, 40.0]);
 
         // Create a new game and run it.
         let mut game = Game {
@@ -40,35 +43,19 @@ impl App {
             input: input,
             player: player,
             timestamp: 0.0,
-            top_wall: AABB::new(
-                self.config.window_width as f64 / 2.0,
-                20.0,
-                self.config.window_width,
-                20 * 2 as u32
-            ),
-            bottom_wall: AABB::new(
-                self.config.window_width as f64 / 2.0,
-                self.config.window_height as f64 - 20.0,
-                self.config.window_width,
-                20 * 2 as u32
-            ),
-            left_wall: AABB::new(
-                20.0,
-                self.config.window_height as f64 / 2.0,
-                20 * 2 as u32,
-                self.config.window_height
-            ),
-            right_wall: AABB::new(
-                self.config.window_width as f64 - 20.0,
-                self.config.window_height as f64 / 2.0,
-                20 * 2 as u32,
-                self.config.window_height
-            )
+            top_wall:    AABB::new([w / 2.0, 20.0],     [w / 2.0, 20.0]),
+            bottom_wall: AABB::new([w / 2.0, h - 20.0], [w / 2.0, 20.0]),
+            left_wall:   AABB::new([20.0, h / 2.0],     [20.0, h / 2.0]),
+            right_wall:  AABB::new([w - 20.0, h / 2.0], [20.0, h / 2.0]),
         };
 
         // Iterate the main game loop
         let mut dt : f64 = 0.0;
         for e in Events::new(&window) {
+            use piston::input::Input;
+            use piston::event::Event;
+            use event::{RenderEvent, UpdateEvent, PressEvent, ReleaseEvent };
+            let e: Event<Input> = e;
             e.render (|args|   game.render(args));
             e.update (|args| { game.update(args); dt = args.dt; });
             e.press  (|args|   game.input.press(args, dt));

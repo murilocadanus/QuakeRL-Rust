@@ -1,9 +1,3 @@
-src/collider.rs
-src/app.rs
-src/game.rs
-src/main.rs
-src/player.rs
-src/settings.rs
 assets/block.png
 assets/ranger_avatar.png
 Cargo.toml
@@ -11,3 +5,9 @@ Cargo.lock
 src/sprite.rs
 src/render.rs
 src/input.rs
+src/app.rs
+src/collider.rs
+src/game.rs
+src/main.rs
+src/player.rs
+src/settings.rs

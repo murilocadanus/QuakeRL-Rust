@@ -34,7 +34,7 @@ impl Draw for Sprite {
 
         // Draw the player
         let sprite_context = &render.ctx
-            .trans(self.pos[0] - hw, self.pos[1] - hh)
+            .trans(self.pos[0] + hw, self.pos[1] + hh)
             .rot_rad(self.rotation)
             .trans(-hw, -hh)
         ;
