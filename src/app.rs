@@ -40,8 +40,6 @@ impl App {
 
         // Create the map
         let mut tilemap = TileMap::from_tileset_path(&Path::new("./assets/tileset.png"));
-        tilemap.tileset.x = (self.config.window_width / 2) as f64;
-        tilemap.tileset.y = (self.config.window_height / 2) as f64;
         tilemap.build_procedural_map(20u, 15u);
 
         // Create a new game and run it.
