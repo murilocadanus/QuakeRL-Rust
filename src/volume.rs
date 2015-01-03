@@ -105,7 +105,7 @@ impl AABB {
 
 impl Draw for AABB {
     fn draw(&self, render: &mut Render) {
-        if cfg!(feature="debug_collider") {
+        if cfg!(feature="debug_volume") {
             let x = self.center[0];
             let y = self.center[1];
             let w = self.half_size[0];
@@ -115,8 +115,22 @@ impl Draw for AABB {
             let collider_ctx = &render.ctx.trans(x, y);
 
             // Add border to collider
-            Rectangle::new([0.0, 1.0, 0.0, 1.0]).draw(
-                [-w, -h, w * 2.0, h * 2.0], collider_ctx, &mut render.gl
+            let width = 1.0;
+            let color = [0.0, 1.0, 0.0, 1.0];
+            Line::new(color, width).draw(
+                [-w, h, w, h], collider_ctx, &mut render.gl
+            );
+
+            Line::new(color, width).draw(
+                [-w, -h, w, -h], collider_ctx, &mut render.gl
+            );
+
+            Line::new(color, width).draw(
+                [w, -h, w, h], collider_ctx, &mut render.gl
+            );
+
+            Line::new(color, width).draw(
+                [-w, -h, -w, h], collider_ctx, &mut render.gl
             );
         }
     }
