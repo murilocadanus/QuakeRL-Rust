@@ -33,8 +33,8 @@ impl Game {
         self.render.draw(&self.left_wall);
         self.render.draw(&self.right_wall);
         self.render.draw(&self.player.aabb);
-        self.render.draw(&self.player);
         self.render.draw(&self.tilemap);
+        self.render.draw(&self.player);
 
         self.render.state_pop(); // how to auto pop?
 
