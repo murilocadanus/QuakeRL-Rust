@@ -11,7 +11,7 @@ name = "quakerl"
 
 debug = []
 debug_sprite = []
-debug_collider = []
+debug_volume = []
 
 [dependencies.piston]
 git = "https://github.com/pistondevelopers/piston"
