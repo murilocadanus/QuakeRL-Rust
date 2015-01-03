@@ -5,6 +5,7 @@ extern crate vecmath;
 use piston::RenderArgs;
 use piston::UpdateArgs;
 use player::Player;
+use tilemap::TileMap;
 use self::vecmath::*;
 use volume::AABB;
 
@@ -15,6 +16,7 @@ pub struct Game {
     pub render: Render,
     pub input: Input,
     pub player: Player,
+    pub tilemap: TileMap,
     pub timestamp: f64,
     pub top_wall: AABB,
     pub bottom_wall: AABB,
@@ -34,6 +36,7 @@ impl Game {
         self.render.draw(&self.bottom_wall);
         self.render.draw(&self.left_wall);
         self.render.draw(&self.right_wall);
+        self.render.draw(&self.tilemap);
         self.render.draw(&self.player);
         self.render.state_pop();
     }
