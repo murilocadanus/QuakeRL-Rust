@@ -1,7 +1,7 @@
 extern crate vecmath;
 
 use self::vecmath::*;
-use collider::{AABB};
+use volume::{AABB};
 use sprite::Sprite;
 use render::{Render, Draw};
 

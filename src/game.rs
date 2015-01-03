@@ -6,7 +6,7 @@ use piston::RenderArgs;
 use piston::UpdateArgs;
 use player::Player;
 use self::vecmath::*;
-use collider::AABB;
+use volume::AABB;
 
 use render::{Render, RenderState};
 use input::{Input, Signal};
