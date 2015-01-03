@@ -1,10 +1,10 @@
 extern crate graphics;
 
-//use render::{Render, Draw};
+use render::{Render, Draw};
 use sprite::Sprite;
 use std::vec::Vec;
 use piston::graphics::*;
-//use current::Set;
+use quack::Set;
 
 #[allow(dead_code)]
 enum Tiles {
@@ -82,7 +82,6 @@ impl TileMap {
 
 }
 
-/*
 impl Draw for TileMap {
     fn draw(&self, render: &mut Render) {
 
@@ -94,7 +93,7 @@ impl Draw for TileMap {
             }
         }
 
+
     }
 }
-*/
 
