@@ -23,6 +23,7 @@ impl App {
         use player::Player;
         use volume::AABB;
         use render::Render;
+        use tilemap::TileMap;
         use input::Input;
 
         let w = self.config.window_width as f64;
@@ -37,11 +38,18 @@ impl App {
         let mut player = Player::from_path(&Path::new("./assets/ranger_avatar.png"));
         player.set_pos([40.0, 40.0]);
 
+        // Create the map
+        let mut tilemap = TileMap::from_tileset_path(&Path::new("./assets/tileset.png"));
+        tilemap.tileset.x = (self.config.window_width / 2) as f64;
+        tilemap.tileset.y = (self.config.window_height / 2) as f64;
+        tilemap.build_procedural_map(20u, 15u);
+
         // Create a new game and run it.
         let mut game = Game {
             render: render,
             input: input,
             player: player,
+            tilemap: tilemap,
             timestamp: 0.0,
             top_wall:    AABB::new([w / 2.0, 20.0],     [w / 2.0, 20.0]),
             bottom_wall: AABB::new([w / 2.0, h - 20.0], [w / 2.0, 20.0]),

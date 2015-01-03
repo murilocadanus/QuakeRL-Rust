@@ -14,6 +14,7 @@ mod game;
 mod player;
 mod volume;
 mod sprite;
+mod tilemap;
 mod input;
 
 fn main() {
