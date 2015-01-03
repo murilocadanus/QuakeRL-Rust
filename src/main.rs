@@ -12,7 +12,7 @@ mod app;
 mod render;
 mod game;
 mod player;
-mod collider;
+mod volume;
 mod sprite;
 mod input;
 

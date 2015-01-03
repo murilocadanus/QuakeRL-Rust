@@ -21,7 +21,7 @@ impl App {
         use event::Events;
         use game::Game;
         use player::Player;
-        use collider::AABB;
+        use volume::AABB;
         use render::Render;
         use input::Input;
 
