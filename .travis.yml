@@ -1,0 +1,18 @@
+language: rust
+env:
+    global:
+        - secure: rDjjGIgwAUDCFEl4BrcWQ/A/u/nrFSdO2wqiMFsmXNg5NbV8ZnoMFN6gW9+NIDGrV3NZQpkrfTGqEAHj7wHc417v9JDNrUdxMAJb02fDx0Xqg1fkeusBps1+JBvQexMk98ThQkaQPCA0Xs+38Y9l7xWDUqzJfvZxwTXW4NzdTnk=
+        - LD_LIBRARY_PATH: /usr/local/lib
+install:
+    # SDL2
+    - curl -O http://www.libsdl.org/release/SDL2-2.0.0.tar.gz
+    - tar -xzvf SDL2-2.0.0.tar.gz
+    - (cd SDL2-2.0.0 && ./configure && make && sudo make install)
+script:
+    - cargo build -v
+    - cargo test -v
+    - cargo doc --no-deps -v
+after_success:
+    - cp -R target/doc doc
+    - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
+    - rm -r doc
