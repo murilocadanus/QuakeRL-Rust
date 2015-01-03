@@ -47,7 +47,7 @@ impl Draw for Sprite {
         graphics::image(&self.image, sprite_context, &mut render.gl);
 
         if cfg!(feature="debug_sprite") {
-            let sprite_context = &render.ctx.trans(self.pos[0] - hw, self.pos[1] - hh);
+            let sprite_context = &render.ctx.trans(self.pos[0] + hw, self.pos[1] + hh);
             Rectangle::new([1.0, 0.0, 1.0, 1.0]).draw([-2.0, -2.0, 5.0, 5.0], sprite_context, &mut render.gl);
         }
     }

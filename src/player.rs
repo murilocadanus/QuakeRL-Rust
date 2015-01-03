@@ -48,7 +48,7 @@ impl Player {
 
 impl Draw for Player {
     fn draw(&self, render: &mut Render) {
-        render.draw(&self.aabb);
         render.draw(&self.sprite);
+        render.draw(&self.aabb);
     }
 }

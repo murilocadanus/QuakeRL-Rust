@@ -9,7 +9,7 @@ name = "quakerl"
 
 [features]
 
-debug = []
+debug = ["debug_sprite", "debug_volume"]
 debug_sprite = []
 debug_volume = []
 
