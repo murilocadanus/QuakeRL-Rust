@@ -3,6 +3,7 @@ extern crate graphics;
 use shader_version::opengl::OpenGL;
 use opengl_graphics::Gl;
 use piston::graphics::*;
+use opengl_graphics::Texture;
 
 pub struct RenderState {
     pub enable_alpha: bool,
@@ -16,7 +17,7 @@ pub struct Render {
 }
 
 pub trait Draw {
-    fn draw(&self, render: &mut Render);
+    fn draw(&self, at: &[f64, ..2], render: &mut Render);
 }
 
 impl Render {
@@ -36,8 +37,8 @@ impl Render {
         }
     }
 
-    pub fn draw<T: Draw>(&mut self, obj: &T) {
-        obj.draw(self);
+    pub fn draw<T: Draw>(&mut self, obj: &T, at: &[f64, ..2]) {
+        obj.draw(at, self);
     }
 
     pub fn state_push(&mut self, state: RenderState) {
@@ -66,5 +67,30 @@ impl Render {
             Some(color) => graphics::clear(color, &mut self.gl),
             None => (),
         }
+    }
+}
+
+pub fn draw_texture(tex: &Texture, at: &[f64, ..2], render: &mut Render) {
+    let (w, h) = tex.get_size();
+    let hw = w as f64 / 2.0;
+    let hh = h as f64 / 2.0;
+
+    // Draw the player
+    let sprite_context = &render.ctx
+        .trans(at[0], at[1])
+        //.rot_rad(0.0)
+        .trans(-hw, -hh)
+    ;
+
+    if cfg!(feature="debug_sprite") {
+        // add border to sprite so we can debug it as we do not have a nice bg yet
+        Rectangle::new([1.0, 0.0, 1.0, 1.0]).draw([-1.0, -1.0, w as f64 + 2.0, h as f64 + 2.0], sprite_context, &mut render.gl);
+    }
+
+    graphics::image(tex, sprite_context, &mut render.gl);
+
+    if cfg!(feature="debug_sprite") {
+        let sprite_context = &render.ctx.trans(at[0], at[1]);
+        Rectangle::new([1.0, 0.0, 1.0, 1.0]).draw([-2.0, -2.0, 5.0, 5.0], sprite_context, &mut render.gl);
     }
 }

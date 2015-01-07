@@ -1,12 +1,14 @@
 extern crate vecmath;
+extern crate graphics;
 
 use self::vecmath::*;
+use self::graphics::ImageSize;
+use opengl_graphics::Texture;
 use volume::{AABB};
-use sprite::Sprite;
-use render::{Render, Draw};
+use render::{Render, Draw, draw_texture};
 
 pub struct Player {
-    sprite: Sprite,
+    pub image: Texture,
     aabb: AABB,
 }
 
@@ -14,21 +16,16 @@ impl Player {
 
     #[allow(dead_code)]
     pub fn get_pos(&self) -> [f64, ..2] {
-        self.sprite.pos
+        self.aabb.get_pos()
     }
 
     pub fn set_pos(&mut self, pos: [f64, ..2]) {
-        self.sprite.pos = pos;
-        self.aabb.set_pos([self.sprite.pos[0] + 20.0, self.sprite.pos[1] + 20.0]);
+        self.aabb.set_pos(pos);
     }
 
     pub fn add_pos(&mut self, pos: [f64, ..2]) {
-        self.sprite.pos = vec2_add(self.sprite.pos, pos);
-        self.aabb.set_pos([self.sprite.pos[0] + 20.0, self.sprite.pos[1] + 20.0]);
-    }
-
-    pub fn add_rotation(&mut self, rot: f64) {
-        self.sprite.rotation += rot;
+        let pos = vec2_add(self.get_pos(), pos);
+        self.aabb.set_pos(pos);
     }
 
     pub fn intersect(&self, other: &AABB) -> bool {
@@ -36,19 +33,19 @@ impl Player {
     }
 
     pub fn from_path(path: &Path) -> Player {
-        let sprite = Sprite::from_path(path);
-        let (w, h) = sprite.get_size();
+        let texture = Texture::from_path(path).unwrap();
+        let (w, h) = texture.get_size();
 
         Player {
-            sprite: sprite,
+            image: texture,
             aabb: AABB::new([0.0, 0.0], [w as f64 / 2.0, h as f64 / 2.0]),
         }
     }
 }
 
 impl Draw for Player {
-    fn draw(&self, render: &mut Render) {
-        render.draw(&self.sprite);
-        render.draw(&self.aabb);
+    fn draw(&self, at: &[f64, ..2], render: &mut Render) {
+        draw_texture(&self.image, at, render);
+        render.draw(&self.aabb, at);
     }
 }

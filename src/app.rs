@@ -36,7 +36,7 @@ impl App {
 
         // Create the player
         let mut player = Player::from_path(&Path::new("./assets/ranger_avatar.png"));
-        player.set_pos([40.0, 40.0]);
+        player.set_pos([60.0, 60.0]);
 
         // Create the map
         let mut tilemap = TileMap::from_tileset_path(&Path::new("./assets/tileset.png"));

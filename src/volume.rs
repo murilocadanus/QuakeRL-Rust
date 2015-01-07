@@ -5,7 +5,7 @@ use render::{Render, Draw};
 use std::num::{Float, FloatMath};
 
 pub struct AABB {
-    center: [f64, ..2],
+    pub center: [f64, ..2],
     half_size: [f64, ..2],
     lower_corner: [f64, ..2],
     upper_corner: [f64, ..2],
@@ -45,6 +45,10 @@ impl AABB {
         }
     }
 
+    pub fn get_pos(&self) -> [f64, ..2] {
+        self.center
+    }
+
     pub fn set_pos(&mut self, pos: [f64, ..2]) {
         self.center = pos;
 
@@ -63,6 +67,11 @@ impl AABB {
     #[allow(dead_code)]
     pub fn get_dimension(&self) -> [f64, ..2] {
         [self.half_size[0] * 2.0, self.half_size[1] * 2.0]
+    }
+
+    #[allow(dead_code)]
+    pub fn get_halfs(&self) -> [f64, ..2] {
+        self.half_size
     }
 
     #[allow(dead_code)]
@@ -104,10 +113,10 @@ impl AABB {
 }
 
 impl Draw for AABB {
-    fn draw(&self, render: &mut Render) {
+    fn draw(&self, at: &[f64, ..2], render: &mut Render) {
         if cfg!(feature="debug_volume") {
-            let x = self.center[0];
-            let y = self.center[1];
+            let x = at[0];
+            let y = at[1];
             let w = self.half_size[0];
             let h = self.half_size[1];
 

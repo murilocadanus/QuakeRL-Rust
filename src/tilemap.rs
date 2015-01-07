@@ -1,9 +1,9 @@
 extern crate graphics;
 
 use render::{Render, Draw};
-use sprite::Sprite;
 use std::vec::Vec;
 use piston::graphics::*;
+use opengl_graphics::Texture;
 use quack::Set;
 
 #[allow(dead_code)]
@@ -20,7 +20,7 @@ enum Tiles {
 }
 
 pub struct TileMap {
-    pub tileset: Sprite,
+    pub tileset: Texture,
     pub map: Vec<uint>,
     pub tiles: Vec<Image>,
 
@@ -32,7 +32,7 @@ impl TileMap {
     pub fn from_tileset_path(path: &Path) -> TileMap {
         TileMap {
             // Initialize the tileset
-            tileset: Sprite::from_path(path),
+            tileset: Texture::from_path(path).unwrap(),
 
             // Initialize the tiles
             tiles: Vec::new(),
@@ -83,17 +83,15 @@ impl TileMap {
 }
 
 impl Draw for TileMap {
-    fn draw(&self, render: &mut Render) {
+    fn draw(&self, at: &[f64, ..2], render: &mut Render) {
 
         // Ugly, try to use an iterator rather then line/column loop algorithm
         for y in range(0u, self.y_size) {
             for x in range(0u, self.x_size) {
-                let sprite_context = &render.ctx.trans((x * 40) as f64, (y * 40) as f64);
-                Image::new().set(SrcRect([0, (self.map[x + self.x_size * y] as i32) * 40, 40, 40])).draw(&self.tileset.image, sprite_context, &mut render.gl);
+                let sprite_context = &render.ctx.trans(at[0] + (x * 40) as f64, at[1] + (y * 40) as f64);
+                Image::new().set(SrcRect([0, (self.map[x + self.x_size * y] as i32) * 40, 40, 40])).draw(&self.tileset, sprite_context, &mut render.gl);
             }
         }
-
-
     }
 }
 
