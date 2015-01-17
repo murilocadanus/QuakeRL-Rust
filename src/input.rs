@@ -1,7 +1,7 @@
 use piston::input::{Button, Key};
 
 /// TEMPORARY: A number maximum for input signals. This should be the size of enum Signal.
-const MAX_INPUT : uint = 2; // find how to use size of Signal
+const MAX_INPUT : usize = 2; // find how to use size of Signal
 
 /// An Input to Signal conversor.
 /// Input is a kind of a conversor of input buttons to input signals.
@@ -21,8 +21,8 @@ pub enum Signal {
 
 /// Internal buffer that hold all needed states from current inputs.
 struct InputBuffer {
-    pressed: [(f64, f64, f64), ..MAX_INPUT],
-//    previous_pressed: [(f32, f64, f64), ..MAX_INPUT],
+    pressed: [(f64, f64, f64); MAX_INPUT],
+//    previous_pressed: [(f32, f64, f64); MAX_INPUT],
 }
 
 /*
@@ -37,8 +37,8 @@ Action::bind_sequence((Signal::X, 2.0), (Signal::Y, 0.0), (Signal::X, 1.0), Acti
 impl Input {
     pub fn new() -> Input {
         let buffer = InputBuffer {
-            pressed: [(0.0, 0.0, 0.0), ..MAX_INPUT],
-//            previous_pressed: [(0.0, 0.0, 0.0), ..MAX_INPUT],
+            pressed: [(0.0, 0.0, 0.0); MAX_INPUT],
+//            previous_pressed: [(0.0, 0.0, 0.0); MAX_INPUT],
         };
 
         Input {
@@ -58,7 +58,7 @@ impl Input {
         //! let y = input.get_signal(Signal::AxisY);
         //! assert_eq!(y, -1.0);
         //! ```
-        let (val, _, _) = self.buffer.pressed[signal as uint];
+        let (val, _, _) = self.buffer.pressed[signal as usize];
         val
     }
 
@@ -66,7 +66,7 @@ impl Input {
     pub fn get_signal_data(&mut self, signal: Signal) -> (f64, f64, f64) {
         //! Get a specified signal stored data in the form of a 3-tuple of f64:
         //! (signal value, milliseconds begin/press time, milliseconds end/release time)
-        self.buffer.pressed[signal as uint]
+        self.buffer.pressed[signal as usize]
     }
 
     // FIXME: find where is the bug.
@@ -74,14 +74,14 @@ impl Input {
     // try this: right, down, then up.
     // compare with: left, down then up.
     fn do_press(&mut self, signal: Signal, amount: f64, dt: f64) {
-        let idx = signal as uint;
+        let idx = signal as usize;
         let (val, _, _) = self.buffer.pressed[idx];
         //println!("press: {} - {}", val, amount);
         self.buffer.pressed[idx] = (val + amount, dt, 0.0);
     }
 
     fn do_release(&mut self, signal: Signal, amount: f64, dt: f64) {
-        let idx = signal as uint;
+        let idx = signal as usize;
         let (val, press_dt, _) = self.buffer.pressed[idx];
         //println!("release: {} - {}", val, amount);
         self.buffer.pressed[idx] = (val - amount, press_dt, dt);

@@ -17,7 +17,7 @@ pub struct Render {
 }
 
 pub trait Draw {
-    fn draw(&self, at: &[f64, ..2], render: &mut Render);
+    fn draw(&self, at: &[f64; 2], render: &mut Render);
 }
 
 impl Render {
@@ -37,7 +37,7 @@ impl Render {
         }
     }
 
-    pub fn draw<T: Draw>(&mut self, obj: &T, at: &[f64, ..2]) {
+    pub fn draw<T: Draw>(&mut self, obj: &T, at: &[f64; 2]) {
         obj.draw(at, self);
     }
 
@@ -70,7 +70,7 @@ impl Render {
     }
 }
 
-pub fn draw_texture(tex: &Texture, at: &[f64, ..2], render: &mut Render) {
+pub fn draw_texture(tex: &Texture, at: &[f64; 2], render: &mut Render) {
     let (w, h) = tex.get_size();
     let hw = w as f64 / 2.0;
     let hh = h as f64 / 2.0;

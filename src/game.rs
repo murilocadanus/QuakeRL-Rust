@@ -28,7 +28,7 @@ impl Game {
     pub fn render(&mut self, _: &RenderArgs) {
         let state = RenderState {
             enable_alpha: true,
-            clear: Some([0.0, ..4]),
+            clear: Some([0.0; 4]),
         };
 
         let zero = [0.0, 0.0];

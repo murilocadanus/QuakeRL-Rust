@@ -1,5 +1,3 @@
-#![feature(default_type_params)]
-#![feature(globs)]
 #![cfg_attr(test, allow(warnings))]
 
 extern crate piston;

@@ -2,17 +2,17 @@ extern crate graphics;
 use piston::graphics::*;
 use render::{Render, Draw};
 
-use std::num::{Float, FloatMath};
+use std::num::Float;
 
 pub struct AABB {
-    pub center: [f64, ..2],
-    half_size: [f64, ..2],
-    lower_corner: [f64, ..2],
-    upper_corner: [f64, ..2],
+    pub center: [f64; 2],
+    half_size: [f64; 2],
+    lower_corner: [f64; 2],
+    upper_corner: [f64; 2],
 }
 
 impl AABB {
-    pub fn new(c: [f64, ..2], r: [f64, ..2]) -> AABB {
+    pub fn new(c: [f64; 2], r: [f64; 2]) -> AABB {
         //! An AABB is a kind of Bounding Box, as so it has a center and a "radius" size per axis.
         //!
         //! +-------------+
@@ -45,11 +45,11 @@ impl AABB {
         }
     }
 
-    pub fn get_pos(&self) -> [f64, ..2] {
+    pub fn get_pos(&self) -> [f64; 2] {
         self.center
     }
 
-    pub fn set_pos(&mut self, pos: [f64, ..2]) {
+    pub fn set_pos(&mut self, pos: [f64; 2]) {
         self.center = pos;
 
         let (lb, ub) = self.get_corners();
@@ -57,7 +57,7 @@ impl AABB {
         self.upper_corner = ub;
     }
 
-    pub fn get_corners(&self) -> ([f64, ..2], [f64, ..2]) {
+    pub fn get_corners(&self) -> ([f64; 2], [f64; 2]) {
         (
             [self.center[0] - self.half_size[0], self.center[1] - self.half_size[1]],
             [self.center[0] + self.half_size[0], self.center[1] + self.half_size[1]],
@@ -65,12 +65,12 @@ impl AABB {
     }
 
     #[allow(dead_code)]
-    pub fn get_dimension(&self) -> [f64, ..2] {
+    pub fn get_dimension(&self) -> [f64; 2] {
         [self.half_size[0] * 2.0, self.half_size[1] * 2.0]
     }
 
     #[allow(dead_code)]
-    pub fn get_halfs(&self) -> [f64, ..2] {
+    pub fn get_halfs(&self) -> [f64; 2] {
         self.half_size
     }
 
@@ -113,7 +113,7 @@ impl AABB {
 }
 
 impl Draw for AABB {
-    fn draw(&self, at: &[f64, ..2], render: &mut Render) {
+    fn draw(&self, at: &[f64; 2], render: &mut Render) {
         if cfg!(feature="debug_volume") {
             let x = at[0];
             let y = at[1];

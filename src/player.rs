@@ -15,15 +15,15 @@ pub struct Player {
 impl Player {
 
     #[allow(dead_code)]
-    pub fn get_pos(&self) -> [f64, ..2] {
+    pub fn get_pos(&self) -> [f64; 2] {
         self.aabb.get_pos()
     }
 
-    pub fn set_pos(&mut self, pos: [f64, ..2]) {
+    pub fn set_pos(&mut self, pos: [f64; 2]) {
         self.aabb.set_pos(pos);
     }
 
-    pub fn add_pos(&mut self, pos: [f64, ..2]) {
+    pub fn add_pos(&mut self, pos: [f64; 2]) {
         let pos = vec2_add(self.get_pos(), pos);
         self.aabb.set_pos(pos);
     }
@@ -44,7 +44,7 @@ impl Player {
 }
 
 impl Draw for Player {
-    fn draw(&self, at: &[f64, ..2], render: &mut Render) {
+    fn draw(&self, at: &[f64; 2], render: &mut Render) {
         draw_texture(&self.image, at, render);
         render.draw(&self.aabb, at);
     }

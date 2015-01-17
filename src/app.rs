@@ -40,7 +40,7 @@ impl App {
 
         // Create the map
         let mut tilemap = TileMap::from_tileset_path(&Path::new("./assets/tileset.png"));
-        tilemap.build_procedural_map(20u, 15u);
+        tilemap.build_procedural_map(20, 15);
 
         // Create a new game and run it.
         let mut game = Game {
