@@ -13,6 +13,12 @@ debug = ["debug_sprite", "debug_volume"]
 debug_sprite = []
 debug_volume = []
 
+[dependencies.pistoncore-event]
+git = "https://github.com/pistondevelopers/event"
+
+[dependencies.pistoncore-input]
+git = "https://github.com/pistondevelopers/input"
+
 [dependencies.piston]
 git = "https://github.com/pistondevelopers/piston"
 
@@ -24,4 +30,13 @@ git = "https://github.com/pistondevelopers/graphics"
 
 [dependencies.piston2d-opengl_graphics]
 git = "https://github.com/pistondevelopers/opengl_graphics"
+
+[dependencies.shader_version]
+git = "https://github.com/pistondevelopers/shader_version"
+
+[dependencies.quack]
+git = "https://github.com/pistondevelopers/quack"
+
+[dependencies.vecmath]
+git = "https://github.com/pistondevelopers/vecmath"
 
