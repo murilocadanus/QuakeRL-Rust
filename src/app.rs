@@ -1,6 +1,13 @@
+extern crate piston;
+extern crate input;
+extern crate event;
+extern crate window;
+extern crate sdl2_window;
+
 use shader_version::opengl::OpenGL;
 use settings::Settings;
-use sdl2_window::Sdl2Window;
+use sdl2_window::Sdl2Window as Window;
+
 
 // Represents the App
 pub struct App {
@@ -57,7 +64,7 @@ impl App {
 
         // Iterate the main game loop
         let mut dt : f64 = 0.0;
-        for e in Events::new(&window) {
+        for e in piston::events(&window) {
             use piston::input::Input;
             use piston::event::Event;
             use event::{RenderEvent, UpdateEvent, PressEvent, ReleaseEvent };
@@ -70,12 +77,9 @@ impl App {
     }
 
     // Returns a window.
-    fn window(&self) -> Sdl2Window {
-        // Set the namespaces
-        use event::WindowSettings;
-
+    fn window(&self) -> Window {
         // Values for Window Creation
-        let window_settings = WindowSettings {
+        let window_settings = window::WindowSettings {
             title: self.config.title.to_string(),
             size: [self.config.window_width, self.config.window_height],
             fullscreen: false,
@@ -83,7 +87,7 @@ impl App {
             samples: 0,
         };
 
-        // Create SDL Window
-        Sdl2Window::new(OpenGL::_3_2, window_settings)
+        // Create a window
+        Window::new(OpenGL::_3_2, window_settings)
     }
 }

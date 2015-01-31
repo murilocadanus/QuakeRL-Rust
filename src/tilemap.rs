@@ -1,10 +1,9 @@
 extern crate graphics;
-
 use render::{Render, Draw};
 use std::vec::Vec;
-use piston::graphics::*;
 use opengl_graphics::Texture;
 use quack::Set;
+use graphics::{Image, SrcRect, RelativeTransform};
 
 #[allow(dead_code)]
 enum Tiles {

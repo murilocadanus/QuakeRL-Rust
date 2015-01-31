@@ -1,8 +1,5 @@
-extern crate vecmath;
-extern crate graphics;
-
-use self::vecmath::*;
-use self::graphics::ImageSize;
+use vecmath::*;
+use graphics::ImageSize;
 use opengl_graphics::Texture;
 use volume::{AABB};
 use render::{Render, Draw, draw_texture};

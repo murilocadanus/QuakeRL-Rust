@@ -1,14 +1,8 @@
-extern crate graphics;
-extern crate input;
-extern crate vecmath;
-
-use piston::RenderArgs;
-use piston::UpdateArgs;
 use player::Player;
 use tilemap::TileMap;
-use self::vecmath::*;
+use vecmath::*;
 use volume::AABB;
-
+use event::*;
 use render::{Render, RenderState};
 use input::{Input, Signal};
 

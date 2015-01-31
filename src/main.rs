@@ -1,11 +1,13 @@
 #![cfg_attr(test, allow(warnings))]
-
+extern crate vecmath;
+extern crate graphics;
 extern crate piston;
 extern crate sdl2_window;
 extern crate opengl_graphics;
 extern crate shader_version;
 extern crate event;
 extern crate quack;
+extern crate texture;
 
 mod settings;
 mod app;

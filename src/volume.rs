@@ -1,8 +1,7 @@
 extern crate graphics;
-use piston::graphics::*;
 use render::{Render, Draw};
-
 use std::num::Float;
+use graphics::RelativeTransform;
 
 pub struct AABB {
     pub center: [f64; 2],
@@ -114,6 +113,8 @@ impl AABB {
 
 impl Draw for AABB {
     fn draw(&self, at: &[f64; 2], render: &mut Render) {
+        use graphics::Line;
+
         if cfg!(feature="debug_volume") {
             let x = at[0];
             let y = at[1];

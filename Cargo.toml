@@ -16,6 +16,12 @@ debug_volume = []
 [dependencies.pistoncore-event]
 git = "https://github.com/pistondevelopers/event"
 
+[dependencies.piston-texture]
+git = "https://github.com/pistondevelopers/texture"
+
+[dependencies.pistoncore-window]
+git = "https://github.com/pistondevelopers/window"
+
 [dependencies.pistoncore-input]
 git = "https://github.com/pistondevelopers/input"
 

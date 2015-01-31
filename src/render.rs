@@ -1,9 +1,8 @@
 extern crate graphics;
-
 use shader_version::opengl::OpenGL;
-use opengl_graphics::Gl;
-use piston::graphics::*;
-use opengl_graphics::Texture;
+use opengl_graphics::{Gl, Texture};
+use texture::ImageSize;
+use graphics::{internal, Context, RelativeTransform};
 
 pub struct RenderState {
     pub enable_alpha: bool,
@@ -84,13 +83,13 @@ pub fn draw_texture(tex: &Texture, at: &[f64; 2], render: &mut Render) {
 
     if cfg!(feature="debug_sprite") {
         // add border to sprite so we can debug it as we do not have a nice bg yet
-        Rectangle::new([1.0, 0.0, 1.0, 1.0]).draw([-1.0, -1.0, w as f64 + 2.0, h as f64 + 2.0], sprite_context, &mut render.gl);
+        graphics::Rectangle::new([1.0, 0.0, 1.0, 1.0]).draw([-1.0, -1.0, w as f64 + 2.0, h as f64 + 2.0], sprite_context, &mut render.gl);
     }
 
     graphics::image(tex, sprite_context, &mut render.gl);
 
     if cfg!(feature="debug_sprite") {
         let sprite_context = &render.ctx.trans(at[0], at[1]);
-        Rectangle::new([1.0, 0.0, 1.0, 1.0]).draw([-2.0, -2.0, 5.0, 5.0], sprite_context, &mut render.gl);
+        graphics::Rectangle::new([1.0, 0.0, 1.0, 1.0]).draw([-2.0, -2.0, 5.0, 5.0], sprite_context, &mut render.gl);
     }
 }
